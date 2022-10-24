@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>WP lab - Students in Course</title>
+
+</head>
+<body>
+<header>
+    <h1>Students in Course </h1>
+</header>
+<section>
+    <div><span th:text="${selectedCourse.getName()}"></span></div>
+    <ul th:each="student : ${enrolledStudents}">
+        <li><span th:text="${student.toString()}"></span></li>
+    </ul>
+    <!--        <li>Јован Јованов (jovan.jovanov)</li>-->
+    <a href="/listCourses">Back</a>
+</section>
+
+</body>
+</html>

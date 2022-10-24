@@ -19,9 +19,9 @@ public class DataHolder {
     @PostConstruct // this is executed after instancing the class
     public void init() {
         for (int i = 0; i < 5; i++) {
-            String name = String.format("Name %d", i);
-            String surname = String.format("Surname %d", i);
-            String username = String.format("user%d", i);
+            String name = String.format("Name%d", i);
+            String surname = String.format("Surname%d", i);
+            String username = String.format("%s.%s", name, surname);
             String password = String.format("pw%d%d", i, i + 1);
             students.add(new Student(username, password, name, surname));
         }

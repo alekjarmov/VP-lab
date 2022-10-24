@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Create a New Student Page</title>
+</head>
+<body>
+<header>
+    <h1>Student Enrollment - Create a New Student </h1>
+</header>
+<form th:method="POST" th:action="@{/CreateStudent}">
+    <section>
+        <label for='username'>Username:</label><input id='username' type='text' name='username'/><br/>
+        <label for='password'>Password:</label><input id='password' type='password' name='password'/><br/>
+        <label for='name'>Name:</label><input id='name' type='text' name='name'/><br/>
+        <label for='surname'>Surname:</label><input id='surname' type='text' name='surname'/><br/>
+        <input type='submit' value='Submit'/>
+    </section>
+</form>
+
+</body>
+</html>

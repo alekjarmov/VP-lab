@@ -33,4 +33,5 @@ public class StudentServiceImpl implements StudentService {
     public Student searchByUsername(String username) {
         return studentRepository.findByUsername(username);
     }
+
 }

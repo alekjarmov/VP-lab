@@ -18,4 +18,12 @@ public class Student {
         this.name = name;
         this.surname = surname;
     }
+    public String getFullName(){
+        return String.format("%s %s", this.name, this.surname);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s (%s)", this.name, this.surname, this.username);
+    }
 }
