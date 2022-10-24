@@ -26,8 +26,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course addStudentInCourse(String username, Long courseId) {
-        Course course =  courseRepository.findById(courseId);
+        Course course = courseRepository.findById(courseId);
         Student student = studentService.searchByUsername(username);
         return courseRepository.addStudentToCourse(student, course);
+    }
+
+    @Override
+    public List<Course> listAll() {
+        return courseRepository.findAllCourses();
     }
 }

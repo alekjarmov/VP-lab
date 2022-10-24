@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Welcome and Choose a Course</title>
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Courses List</h1>
+</header>
+<main>
+  <h2>Choose course:</h2>
+<!--  <input type="radio" name="courseId" value="1"> Веб програмирање<br/>-->
+<!--  <input type="radio" name="courseId" value="2"> Оперативни системи<br/>-->
+<!--  <input type="radio" name="courseId" value="3"> Електронска и мобилна трговија<br/>-->
+<!--  <input type="radio" name="courseId" value="4"> Компјутерски мрежи<br/>-->
+  <div th:each="course: ${courses}">
+    <input type="radio" name="courseId" th:value="${course.courseId}"> <span th:text="${course.name}"></span><br/>
+  </div>
+
+  <br/>
+  <a href="/АddStudent">Submit</a>
+</main>
+</body>
+</html>
