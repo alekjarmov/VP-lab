@@ -15,7 +15,21 @@ public class StudentRepository {
     }
 
     public List<Student> findAllByNameOrSurname(String text) {
-        return DataHolder.students.stream().filter(student -> student.getName().contains(text) | student.getSurname().contains(text)).collect(Collectors.toList());
+        return DataHolder.students.stream()
+                .filter(student -> student.getName()
+                        .contains(text) || student.getSurname().contains(text))
+                .collect(Collectors.toList());
+    }
+
+    public Student addStudent(Student student) {
+        DataHolder.students.add(student);
+        return student;
+    }
+
+    public Student findByUsername(String username) {
+        return DataHolder.students.stream()
+                .filter(student -> student.getUsername().equals(username))
+                .findFirst().orElse(null);
     }
 
 }
