@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.model.exceptions.InvalidFormParameters;
 import mk.ukim.finki.wp.lab.repository.StudentRepository;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> listAll() {
+
         return studentRepository.findAllStundents();
     }
 
@@ -27,8 +29,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student save(String username, String password, String name, String surname) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty() || name == null || name.isEmpty() || surname == null || surname.isEmpty())
+            throw new InvalidFormParameters();
         return studentRepository.addStudent(new Student(username, password, name, surname));
     }
+
     @Override
     public Student searchByUsername(String username) {
         return studentRepository.findByUsername(username);

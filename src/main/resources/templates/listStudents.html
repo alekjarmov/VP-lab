@@ -38,7 +38,7 @@
 <section>
     <h2>Select the student to enroll:</h2>
     <a href='/CreateStudent' type='button'>Create New Student</a> <br/> <br/>
-    <form>
+    <form th:action="@{/StudentEnrollmentSummary}" th:method="POST">
 <!--        <input type="radio" name="size" value="petar.petrov"> Петар Петров <br/>-->
 <!--        <input type="radio" name="size" value="mile.milev"> Миле Милев <br/>-->
 <!--        <input type="radio" name="size" value="gjorgji.gjorgjiev"> Ѓорѓи Ѓорѓиев <br/>-->
@@ -47,7 +47,7 @@
         </div>
         <br/>
 
-        <a href="/StudentEnrollmentSummary">Submit</a>
+        <button type="submit">Submit</button>
     </form>
 
 </section>

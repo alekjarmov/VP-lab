@@ -29,7 +29,11 @@ public class DataHolder {
             final Long id = (long) i; // can not cast to (Long) other choies are Long.valueOf(i) or new Long(i)
             String name = String.format("Course %d", i);
             String description = String.format("Description for course %d", i);
-            List<Student> studentList = students.stream().filter(student -> !student.getName().equals(String.format("Name %d", id))).collect(Collectors.toList());
+            List<Student> studentList = students.stream()
+                    .filter(student ->
+                            !student.getName().contains(String.valueOf(id)) &&
+                            !student.getSurname().contains(String.valueOf((id + 1) % 5)))
+                    .collect(Collectors.toList());
             courses.add(new Course(id, name, description, studentList));
         }
     }

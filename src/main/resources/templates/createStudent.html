@@ -15,6 +15,9 @@
         <label for='name'>Name:</label><input id='name' type='text' name='name'/><br/>
         <label for='surname'>Surname:</label><input id='surname' type='text' name='surname'/><br/>
         <input type='submit' value='Submit'/>
+        <div th:if="${hasError}">
+            <span th:text="${error}" style="color:red;"></span>
+        </div>
     </section>
 </form>
 

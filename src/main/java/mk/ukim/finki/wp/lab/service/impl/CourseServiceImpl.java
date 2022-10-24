@@ -2,6 +2,8 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.model.exceptions.CourseDoesNotExistException;
+import mk.ukim.finki.wp.lab.model.exceptions.NoSuchUsernameException;
 import mk.ukim.finki.wp.lab.repository.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
@@ -27,7 +29,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course addStudentInCourse(String username, Long courseId) {
         Course course = courseRepository.findById(courseId);
+        if (course == null) {
+            throw new CourseDoesNotExistException();
+        }
         Student student = studentService.searchByUsername(username);
+        if (student == null) {
+            throw new NoSuchUsernameException();
+        }
         return courseRepository.addStudentToCourse(student, course);
     }
 

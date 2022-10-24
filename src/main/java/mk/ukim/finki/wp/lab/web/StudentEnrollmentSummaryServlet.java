@@ -33,9 +33,20 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         long courseId = Long.parseLong(req.getSession().getAttribute("selectedCourse").toString());
         Course selectedCourse = courseService.findById(courseId);
-        context.setVariable("selectedCourse", selectedCourse);
+        context.setVariable("course", selectedCourse);
         List<Student> enrolledStudents = courseService.listStudentsByCourse(courseId);
         context.setVariable("enrolledStudents", enrolledStudents);
+        req.getSession().removeAttribute("selectedCourse"); // se trga vekje izbraniot kurs
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        long courseId = Long.parseLong(req.getSession().getAttribute("selectedCourse").toString());
+        String username  = req.getParameter("size");
+        courseService.addStudentInCourse(username, courseId);
+        resp.sendRedirect("/StudentEnrollmentSummary");
+
     }
 }

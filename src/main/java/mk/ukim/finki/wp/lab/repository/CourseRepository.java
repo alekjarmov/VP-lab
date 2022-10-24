@@ -6,7 +6,6 @@ import mk.ukim.finki.wp.lab.model.Student;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class CourseRepository {
@@ -21,17 +20,14 @@ public class CourseRepository {
     }
 
     public List<Student> findAllStudentsByCourse(Long courseId) {
-        return DataHolder.courses.stream()
-                .filter(course -> course.getCourseId()
-                        .equals(courseId))
-                .flatMap(course -> course.getStudents().stream())
-                .collect(Collectors.toList());
+        return findById(courseId).getStudents();
     }
 
     public Course addStudentToCourse(Student student, Course course) {
 //         Se nadevam nema potreba od dolnovo
 //        int ind = DataHolder.courses.indexOf(course);
 //        DataHolder.courses.get(ind).getStudents().add(student);
+
         course.getStudents().add(student);
         return course;
     }

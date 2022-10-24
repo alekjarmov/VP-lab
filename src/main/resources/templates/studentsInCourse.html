@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>WP lab - Students in Course</title>
@@ -10,7 +10,7 @@
     <h1>Students in Course </h1>
 </header>
 <section>
-    <div><span th:text="${selectedCourse.getName()}"></span></div>
+    <div><span th:text="${course.getName()}"></span></div>
     <ul th:each="student : ${enrolledStudents}">
         <li><span th:text="${student.toString()}"></span></li>
     </ul>
