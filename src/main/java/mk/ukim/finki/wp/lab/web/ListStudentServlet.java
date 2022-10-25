@@ -30,6 +30,13 @@ public class ListStudentServlet extends HttpServlet {
 
         context.setVariable("students", studentService.listAll());
         String selectedCourse = req.getSession().getAttribute("selectedCourse").toString();
+        // check to see if any error was forwarded when selecting the student
+        if (req.getSession().getAttribute("hasError") != null) {
+            context.setVariable("hasError", true);
+            context.setVariable("error", req.getSession().getAttribute("error"));
+            req.getSession().removeAttribute("hasError");
+            req.getSession().removeAttribute("error");
+        }
         context.setVariable("selectedCourse", selectedCourse);
         springTemplateEngine.process("listStudents.html", context, resp.getWriter());
 

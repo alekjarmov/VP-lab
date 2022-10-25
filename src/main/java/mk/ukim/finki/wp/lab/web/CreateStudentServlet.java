@@ -1,6 +1,5 @@
 package mk.ukim.finki.wp.lab.web;
 
-import mk.ukim.finki.wp.lab.model.exceptions.InvalidFormParameters;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.thymeleaf.context.WebContext;
@@ -45,7 +44,7 @@ public class CreateStudentServlet extends HttpServlet {
             studentService.save(username, password, name, surname);
             resp.sendRedirect("/AddStudent");
         }
-        catch (InvalidFormParameters e){
+        catch (RuntimeException e){
             context.setVariable("error", e.getMessage());
             context.setVariable("hasError", true);
             springTemplateEngine.process("createStudent.html", context, resp.getWriter());

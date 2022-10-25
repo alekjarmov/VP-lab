@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseDoesNotExistException;
 import mk.ukim.finki.wp.lab.model.exceptions.NoSuchUsernameException;
+import mk.ukim.finki.wp.lab.model.exceptions.StudentAlreadyInCourseException;
 import mk.ukim.finki.wp.lab.repository.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
@@ -34,7 +35,10 @@ public class CourseServiceImpl implements CourseService {
         }
         Student student = studentService.searchByUsername(username);
         if (student == null) {
-            throw new NoSuchUsernameException();
+            throw new NoSuchUsernameException("No username selected");
+        }
+        if (course.getStudents().contains(student)) {
+            throw new StudentAlreadyInCourseException();
         }
         return courseRepository.addStudentToCourse(student, course);
     }
