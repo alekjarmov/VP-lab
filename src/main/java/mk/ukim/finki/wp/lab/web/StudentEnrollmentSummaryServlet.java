@@ -45,8 +45,24 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         long courseId = Long.parseLong(req.getSession().getAttribute("selectedCourse").toString());
         String username  = req.getParameter("size");
-        courseService.addStudentInCourse(username, courseId);
-        resp.sendRedirect("/StudentEnrollmentSummary");
+        try {
+            courseService.addStudentInCourse(username, courseId);
+            resp.sendRedirect("/StudentEnrollmentSummary");
+        } catch (RuntimeException ex){
+//            HttpServletRequestWrapper wrapper = new HttpServletRequestWrapper(req);
+//            WebContext wrappedContext = new WebContext(wrapper, resp, req.getServletContext());
+////            wrappedContext.setVariable("hasError", true);
+////            wrappedContext.setVariable("error", ex.getMessage());
+//            wrapper.setAttribute("hasError", true);
+//            wrapper.setAttribute("error", ex.getMessage());
+//            wrapper.getSession().setAttribute("selectedCourse", courseId);
+//            RequestDispatcher dispatcher = wrapper.getServletContext().getRequestDispatcher("/AddStudent");
+//            dispatcher.forward(wrapper, resp);
+            req.getSession().setAttribute("hasError", true);
+            req.getSession().setAttribute("error", ex.getMessage());
+            resp.sendRedirect("/AddStudent");
+        }
+        // resp.sendRedirect can not be outside because it will try to execute after the foward
 
     }
 }
