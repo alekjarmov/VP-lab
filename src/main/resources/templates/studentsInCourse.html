@@ -10,6 +10,21 @@
     <h1>Students in Course </h1>
 </header>
 <section>
+
+        <form th:method="GET" th:action="@{/StudentEnrollmentSummary}">
+            <div >
+                <select  name="newCourse">
+                    <div th:each="course : ${courses}">
+                        <option th:value="${course.courseId}" th:text="${course.name}"></option>
+                    </div>
+
+                </select>
+                <button type="submit">Submit</button>
+
+            </div>
+        </form>
+
+
     <div><span th:text="${course.getName()}"></span></div>
     <ul th:each="student : ${enrolledStudents}">
         <li><span th:text="${student.toString()}"></span></li>

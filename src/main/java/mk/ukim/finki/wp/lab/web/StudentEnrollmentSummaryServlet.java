@@ -31,13 +31,19 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        if (req.getParameter("newCourse")!= null){
+            String courseId = req.getParameter("newCourse");
+            req.getSession().setAttribute("selectedCourse",courseId);
+        }
         long courseId = Long.parseLong(req.getSession().getAttribute("selectedCourse").toString());
         Course selectedCourse = courseService.findById(courseId);
         context.setVariable("course", selectedCourse);
         List<Student> enrolledStudents = courseService.listStudentsByCourse(courseId);
         context.setVariable("enrolledStudents", enrolledStudents);
-        req.getSession().removeAttribute("selectedCourse"); // se trga vekje izbraniot kurs
+        // req.getSession().removeAttribute("selectedCourse"); // se trga vekje izbraniot kurs
+        context.setVariable("courses", courseService.listAll());
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
+
     }
 
     @Override
@@ -49,20 +55,10 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
             courseService.addStudentInCourse(username, courseId);
             resp.sendRedirect("/StudentEnrollmentSummary");
         } catch (RuntimeException ex){
-//            HttpServletRequestWrapper wrapper = new HttpServletRequestWrapper(req);
-//            WebContext wrappedContext = new WebContext(wrapper, resp, req.getServletContext());
-////            wrappedContext.setVariable("hasError", true);
-////            wrappedContext.setVariable("error", ex.getMessage());
-//            wrapper.setAttribute("hasError", true);
-//            wrapper.setAttribute("error", ex.getMessage());
-//            wrapper.getSession().setAttribute("selectedCourse", courseId);
-//            RequestDispatcher dispatcher = wrapper.getServletContext().getRequestDispatcher("/AddStudent");
-//            dispatcher.forward(wrapper, resp);
             req.getSession().setAttribute("hasError", true);
             req.getSession().setAttribute("error", ex.getMessage());
             resp.sendRedirect("/AddStudent");
         }
         // resp.sendRedirect can not be outside because it will try to execute after the foward
-
     }
 }
