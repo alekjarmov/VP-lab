@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseDoesNotExistException;
+import mk.ukim.finki.wp.lab.model.exceptions.InvalidFormParameters;
 import mk.ukim.finki.wp.lab.model.exceptions.NoSuchUsernameException;
 import mk.ukim.finki.wp.lab.model.exceptions.StudentAlreadyInCourseException;
 import mk.ukim.finki.wp.lab.repository.CourseRepository;
@@ -63,8 +64,16 @@ public class CourseServiceImpl implements CourseService {
     public Course saveCourse(String name, String description, Long teacherId, Optional<Long> courseId) {
         Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null); // should be exception
         Optional<Course> course = Optional.empty();
-        if(courseId.isPresent()){
+        boolean nameTaken = listAll().stream().anyMatch(x -> x.getName().equals(name));
+        if (courseId.isPresent()) {
             course = Optional.of(findById(courseId.get()));
+            if (!course.get().getName().equals(name)) {
+                throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
+            }
+        } else {
+            if (nameTaken) {
+                throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
+            }
         }
         return courseRepository.saveCourse(name, description, teacherForCourse, course);
     }

@@ -37,6 +37,7 @@
         <br/>
         <button type="submit">Submit</button>
     </form>
+    <div th:if="${hasError}" th:text="${error}" style="color: red"></div>
     <br>
     <a th:href="@{/courses/add}">Add course</a>
 </main>

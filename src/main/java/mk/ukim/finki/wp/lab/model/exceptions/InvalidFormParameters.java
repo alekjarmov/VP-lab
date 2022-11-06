@@ -4,4 +4,8 @@ public class InvalidFormParameters extends RuntimeException {
     public InvalidFormParameters() {
         super("Invalid form parameters");
     }
+
+    public InvalidFormParameters(String message) {
+        super(message);
+    }
 }

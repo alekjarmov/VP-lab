@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Course {
+public class Course implements Comparable<Course>{
     private Long courseId;
     private String name;
     private String description;
@@ -22,5 +22,10 @@ public class Course {
         this.description = description;
         this.students = students;
         this.teacher = teacher;
+    }
+
+    @Override
+    public int compareTo(Course o) {
+        return this.getName().compareTo(o.getName());
     }
 }

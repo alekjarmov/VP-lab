@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/courses")
@@ -28,7 +30,8 @@ public class CourseController {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
-        model.addAttribute("courses", courseService.listAll());
+        List<Course> courses = courseService.listAll().stream().sorted().collect(Collectors.toList());
+        model.addAttribute("courses", courses);
         return "listCourses";
     }
 
@@ -36,10 +39,16 @@ public class CourseController {
     public String addCourse(@RequestParam String name,
                             @RequestParam String description,
                             @RequestParam Long teacherId,
-                            @RequestParam(required = false) Long courseId
+                            @RequestParam(required = false) Long courseId,
+                            HttpServletRequest request
     ) {
         Optional<Long> optionalCourseId = Optional.ofNullable(courseId);
-        this.courseService.saveCourse(name, description, teacherId, optionalCourseId);
+        try{
+            this.courseService.saveCourse(name, description, teacherId, optionalCourseId);
+        }catch (RuntimeException e){
+            return String.format("redirect:/courses?error=%s", e.getMessage());
+        }
+        request.getSession().invalidate();
         return "redirect:/courses";
     }
 
