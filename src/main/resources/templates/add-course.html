@@ -10,17 +10,38 @@
 </header>
 <form th:method="POST" th:action="@{/courses/add}">
     <section>
-        <label for='name'>Name:</label><input id='name' type='text' name='name'/><br/>
-        <label for='description'>Description:</label><input id='description' type='text' name='description'/><br/>
+        <label for='name'>Name:</label>
+        <input
+                id='name'
+                type='text'
+                name='name'
+                th:value="${course == null ? '': course.name}"/><br/>
+        <label for='description'>Description:</label>
+        <input
+                id='description'
+                type='text'
+                name='description'
+                th:value="${course == null ? '': course.description}"/><br/>
         <label for='teacherId'>Teacher:</label>
         <select name="teacherId" id="teacherId">
-
-            <!--/*@thymesVar id="teachers" type="java.util.List"*/-->
-            <div th:each="teacher : ${teachers}">
                 <!--/*@thymesVar id="teacher" type="mk.ukim.finki.wp.lab.model.Teacher"*/-->
-                <option th:value="${teacher.getId()}" th:text="${teacher.toString()}"></option>
-            </div>
+                <option
+                        th:if="${course != null}"
+                        th:each="teacher : ${teachers}"
+                        th:value="${teacher.getId()}"
+                        th:text="${teacher.toString()}"
+                        th:selected="${teacher!= null && teacher.getId()!=null && teacher.getId() == course.teacher.getId() }"
+                >
+                </option>
+                <option
+                        th:if="${course == null}"
+                        th:each="teacher : ${teachers}"
+                        th:value="${teacher.getId()}"
+                        th:text="${teacher.toString()}">
+                </option>
         </select>
+        <input  th:if="${course != null}" type="hidden" th:value="${course.getCourseId()}"
+                name="courseId">
         <input type='submit' value='Submit'/>
         <div th:if="${hasError}">
             <span th:text="${error}" style="color:red;"></span>

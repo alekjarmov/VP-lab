@@ -23,5 +23,4 @@ public class Course {
         this.students = students;
         this.teacher = teacher;
     }
-
 }

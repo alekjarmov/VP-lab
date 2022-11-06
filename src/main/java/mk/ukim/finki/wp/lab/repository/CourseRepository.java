@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class CourseRepository {
@@ -33,13 +34,27 @@ public class CourseRepository {
         course.getStudents().add(student);
         return course;
     }
-    public Course addCourse(String name, String description, Teacher teacher) {
+
+    public Course saveCourse(String name, String description, Teacher teacher, Optional<Course> course) {
         //name desc students teacher
-        Course course = new Course(name, description, new ArrayList<>(), teacher);
-        DataHolder.courses.add(course);
+        // either editing or adding a new course
+        return course.isPresent() ?
+                editCourse(course.get(), name, description, teacher) :
+                addCourse(name, description, teacher);
+    }
+
+    public Course editCourse(Course course, String name, String descripton, Teacher teacher) {
+        course.setName(name);
+        course.setDescription(descripton);
+        course.setTeacher(teacher);
         return course;
     }
 
+    public Course addCourse(String name, String description, Teacher teacher) {
+        Course newCourse = new Course(name, description, new ArrayList<>(), teacher);
+        DataHolder.courses.add(newCourse);
+        return newCourse;
+    }
 
     public Course deleteCourse(Long id) {
         Course toRemove = findById(id);

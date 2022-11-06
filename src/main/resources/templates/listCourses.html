@@ -29,7 +29,9 @@
 <!--            </form>-->
             <a th:href="@{'/courses/delete/{id}' (id = ${course.getCourseId()})}" style="color: red">Delete</a>
             &nbsp;
-            <a th:href="@{'/products/edit-form/{id}' (id=${course.getCourseId()})}" style="color: aquamarine">Edit</a>
+            <a th:href="@{'/courses/edit-form/{id}' (id=${course.getCourseId()})}" style="color: aquamarine;background:
+            black">Edit
+            </a>
 
         </div>
         <br/>

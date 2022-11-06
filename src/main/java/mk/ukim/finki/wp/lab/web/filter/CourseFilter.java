@@ -50,7 +50,9 @@ public class CourseFilter implements Filter {
     // replaces the link of a form /x/y/3432 with /x/y/{id}
     public String cleanPath(Map<String, List<String>> excludedRoutes, String path) {
         for (String key : excludedRoutes.keySet()) {
-            if (path.contains(key) && key.contains("{id}")) {
+            String keyWithoutId = key.replaceFirst("/\\{id}","");
+
+            if (path.contains(keyWithoutId) && key.contains("{id}")) {
                 path = key;
                 break;
             }

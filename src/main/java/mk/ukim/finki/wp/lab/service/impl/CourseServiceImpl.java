@@ -13,6 +13,7 @@ import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -59,9 +60,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course addCourse(String name, String description, Long teacherId) {
-        Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null);
-        return courseRepository.addCourse(name, description, teacherForCourse);
+    public Course saveCourse(String name, String description, Long teacherId, Optional<Long> courseId) {
+        Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null); // should be exception
+        Optional<Course> course = Optional.empty();
+        if(courseId.isPresent()){
+            course = Optional.of(findById(courseId.get()));
+        }
+        return courseRepository.saveCourse(name, description, teacherForCourse, course);
     }
 
     @Override

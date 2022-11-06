@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/courses")
@@ -34,9 +35,11 @@ public class CourseController {
     @PostMapping("/add")
     public String addCourse(@RequestParam String name,
                             @RequestParam String description,
-                            @RequestParam Long teacherId
+                            @RequestParam Long teacherId,
+                            @RequestParam(required = false) Long courseId
     ) {
-        this.courseService.addCourse(name, description, teacherId);
+        Optional<Long> optionalCourseId = Optional.ofNullable(courseId);
+        this.courseService.saveCourse(name, description, teacherId, optionalCourseId);
         return "redirect:/courses";
     }
 
@@ -58,7 +61,9 @@ public class CourseController {
         if(courseService.findById(id) != null){
             Course course = courseService.findById(id);
             model.addAttribute("course", course);
-            return "add-product";
+            List<Teacher> teachers = teacherService.findAll();
+            model.addAttribute("teachers", teachers);
+            return "add-course";
         }
         return "redirect:/courses";
     }
