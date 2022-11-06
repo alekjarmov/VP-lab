@@ -2,12 +2,14 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseDoesNotExistException;
 import mk.ukim.finki.wp.lab.model.exceptions.NoSuchUsernameException;
 import mk.ukim.finki.wp.lab.model.exceptions.StudentAlreadyInCourseException;
 import mk.ukim.finki.wp.lab.repository.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
+import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,14 @@ import java.util.List;
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final StudentService studentService;
+    private final TeacherService teacherService;
 
-    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService) {
+    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService, TeacherService teacherService) {
         this.courseRepository = courseRepository;
         this.studentService = studentService;
+        this.teacherService = teacherService;
     }
+
 
     @Override
     public List<Student> listStudentsByCourse(Long courseId) {
@@ -51,5 +56,16 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course findById(Long courseId) {
         return courseRepository.findById(courseId);
+    }
+
+    @Override
+    public Course addCourse(String name, String description, Long teacherId) {
+        Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null);
+        return courseRepository.addCourse(name, description, teacherForCourse);
+    }
+
+    @Override
+    public Course deleteCourse(Long id) {
+        return courseRepository.deleteCourse(id);
     }
 }

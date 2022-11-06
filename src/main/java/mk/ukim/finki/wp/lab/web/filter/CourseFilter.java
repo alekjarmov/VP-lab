@@ -21,13 +21,14 @@ public class CourseFilter implements Filter {
         List<String> goodPaths = new ArrayList<>();
 
         Map<String, List<String>> excludedRoutes = new HashMap<>();
-        excludedRoutes.put("/listCourses", Arrays.asList("GET"));
+        excludedRoutes.put("/courses", Arrays.asList("GET"));
         excludedRoutes.put("/AddStudent", Arrays.asList("POST"));
+        excludedRoutes.put("/courses/add", Arrays.asList("POST", "GET"));
 
         String method = request.getMethod();
         boolean doRedirect = shouldRedirect(excludedRoutes, path, method);
         if (doRedirect && id == null) {
-            response.sendRedirect("/listCourses");
+            response.sendRedirect("/courses");
         } else {
             filterChain.doFilter(request, response);
         }

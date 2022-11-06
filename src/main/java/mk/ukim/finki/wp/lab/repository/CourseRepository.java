@@ -3,8 +3,10 @@ package mk.ukim.finki.wp.lab.repository;
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.model.Teacher;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -31,7 +33,17 @@ public class CourseRepository {
         course.getStudents().add(student);
         return course;
     }
+    public Course addCourse(String name, String description, Teacher teacher) {
+        //name desc students teacher
+        Course course = new Course(name, description, new ArrayList<>(), teacher);
+        DataHolder.courses.add(course);
+        return course;
+    }
 
 
-
+    public Course deleteCourse(Long id) {
+        Course toRemove = findById(id);
+        DataHolder.courses.remove(toRemove);
+        return toRemove;
+    }
 }

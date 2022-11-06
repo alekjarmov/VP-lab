@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Create/Edit a course</title>
+</head>
+<body>
+<header>
+    <h1>Create/Edit a course</h1>
+</header>
+<form th:method="POST" th:action="@{/courses/add}">
+    <section>
+        <label for='name'>Name:</label><input id='name' type='text' name='name'/><br/>
+        <label for='description'>Description:</label><input id='description' type='text' name='description'/><br/>
+        <label for='teacherId'>Teacher:</label>
+        <select name="teacherId" id="teacherId">
+
+            <!--/*@thymesVar id="teachers" type="java.util.List"*/-->
+            <div th:each="teacher : ${teachers}">
+                <!--/*@thymesVar id="teacher" type="mk.ukim.finki.wp.lab.model.Teacher"*/-->
+                <option th:value="${teacher.getId()}" th:text="${teacher.toString()}"></option>
+            </div>
+        </select>
+        <input type='submit' value='Submit'/>
+        <div th:if="${hasError}">
+            <span th:text="${error}" style="color:red;"></span>
+        </div>
+    </section>
+</form>
+
+</body>
+</html>

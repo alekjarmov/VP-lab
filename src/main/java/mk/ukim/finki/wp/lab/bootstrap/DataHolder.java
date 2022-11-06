@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component // ova znaci deka e singleton
-@Getter
+@Getter // ova znaci deka ima getter
 public class DataHolder {
     public static List<Student> students = new ArrayList<>();
     public static List<Course> courses = new ArrayList<>();
