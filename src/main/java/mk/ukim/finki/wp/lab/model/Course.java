@@ -17,7 +17,7 @@ public class Course {
 
     public Course(String name, String description, List<Student> students, Teacher teacher) {
         //generate a random id for course
-        this.courseId = (long) (Math.random() * 1000000);
+        this.courseId = (long) (Math.random() * 1000);
         this.name = name;
         this.description = description;
         this.students = students;

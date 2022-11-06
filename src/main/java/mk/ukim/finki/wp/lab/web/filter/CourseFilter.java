@@ -24,8 +24,12 @@ public class CourseFilter implements Filter {
         excludedRoutes.put("/courses", Arrays.asList("GET"));
         excludedRoutes.put("/AddStudent", Arrays.asList("POST"));
         excludedRoutes.put("/courses/add", Arrays.asList("POST", "GET"));
-
+        excludedRoutes.put("/courses/delete/{id}", Arrays.asList("GET", "DELETE"));
+        excludedRoutes.put("/courses/edit-form/{id}", Arrays.asList("GET"));
         String method = request.getMethod();
+        // clean up the path will change the ids and so on
+        path = cleanPath(excludedRoutes, path);
+
         boolean doRedirect = shouldRedirect(excludedRoutes, path, method);
         if (doRedirect && id == null) {
             response.sendRedirect("/courses");
@@ -41,6 +45,17 @@ public class CourseFilter implements Filter {
             return !methods.contains(method);
         }
         return true;
+    }
+
+    // replaces the link of a form /x/y/3432 with /x/y/{id}
+    public String cleanPath(Map<String, List<String>> excludedRoutes, String path) {
+        for (String key : excludedRoutes.keySet()) {
+            if (path.contains(key) && key.contains("{id}")) {
+                path = key;
+                break;
+            }
+        }
+        return path;
     }
 
     @Override

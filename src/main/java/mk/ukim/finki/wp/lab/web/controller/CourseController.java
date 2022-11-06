@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
+import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
@@ -38,16 +39,27 @@ public class CourseController {
         this.courseService.addCourse(name, description, teacherId);
         return "redirect:/courses";
     }
+
     @GetMapping("/add")
-    public String addCourseGet(Model model){
+    public String addCourseGet(Model model) {
         List<Teacher> teachers = teacherService.findAll();
-        model.addAttribute("teachers",teachers);
+        model.addAttribute("teachers", teachers);
         return "add-course";
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteCourse(@PathVariable Long id){
+    @GetMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
+        return "redirect:/courses";
+    }
+
+    @GetMapping("/edit-form/{id}")
+    public String editProductPage(@PathVariable Long id, Model model) {
+        if(courseService.findById(id) != null){
+            Course course = courseService.findById(id);
+            model.addAttribute("course", course);
+            return "add-product";
+        }
         return "redirect:/courses";
     }
 

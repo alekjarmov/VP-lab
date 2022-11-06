@@ -19,11 +19,18 @@
     <!--  <input type="radio" name="courseId" value="1"> Веб програмирање<br/>-->
     <!--  <input type="radio" name="courseId" value="2"> Оперативни системи<br/>-->
     <!--  <input type="radio" name="courseId" value="3"> Електронска и мобилна трговија<br/>-->
-    <!--  <input type="radio" name="courseId" value="4"> Компјутерски мрежи<br/>-->
     <form th:action="@{/AddStudent}" th:method="POST">
         <div th:each="course: ${courses}">
             <input type="radio" name="courseId" th:value="${course.courseId}"> <span
-                th:text="${course.name}"></span><br/>
+                th:text="${course.name}"></span>
+<!--            <form th:action="@{'/courses/delete/{id}' (id = ${course.getCourseId()}) }" th:method="DELETE"-->
+<!--                  style="display: inline">-->
+<!--                <button style="color: red;display: inline" type="submit"> Delete</button>-->
+<!--            </form>-->
+            <a th:href="@{'/courses/delete/{id}' (id = ${course.getCourseId()})}" style="color: red">Delete</a>
+            &nbsp;
+            <a th:href="@{'/products/edit-form/{id}' (id=${course.getCourseId()})}" style="color: aquamarine">Edit</a>
+
         </div>
         <br/>
         <button type="submit">Submit</button>
