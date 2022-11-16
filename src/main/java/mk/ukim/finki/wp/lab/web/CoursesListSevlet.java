@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet(name = "ListCoursesServlet", urlPatterns = "/listCourses")
 public class CoursesListSevlet extends HttpServlet {
@@ -33,6 +34,14 @@ public class CoursesListSevlet extends HttpServlet {
         context.setVariable("courses", courseService.listAll());
         List<Teacher> teachers = teacherService.findAll();
         context.setVariable("teachers", teachers);
+        Optional<Teacher> teacher = teacherService.bestTeacher();
+        context.setVariable("bestTeacher", teacher.orElse(null));
+        if (teacher.isPresent()){
+            context.setVariable("bestTeacherCourses", teacherService.coursesTought(teacher.get()));
+        }else{
+            context.setVariable("bestTeacherCourses", 0);
+        }
+
         springTemplateEngine.process("listCourses.html", context, resp.getWriter());
 
     }

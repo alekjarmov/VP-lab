@@ -32,6 +32,13 @@ public class CourseController {
         }
         List<Course> courses = courseService.listAll().stream().sorted().collect(Collectors.toList());
         model.addAttribute("courses", courses);
+        Optional<Teacher> teacher = teacherService.bestTeacher();
+        model.addAttribute("bestTeacher", teacher.orElse(null));
+        if (teacher.isPresent()){
+            model.addAttribute("bestTeacherCourses", teacherService.coursesTought(teacher.get()));
+        }else{
+            model.addAttribute("bestTeacherCourses", 0);
+        }
         return "listCourses";
     }
 

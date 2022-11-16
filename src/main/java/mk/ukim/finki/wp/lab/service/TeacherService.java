@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface TeacherService {
     public List<Teacher> findAll();
     public Optional<Teacher> findById(Long id);
+    public Optional<Teacher> bestTeacher();
+    public int coursesTought(Teacher teacher);
 }

@@ -26,4 +26,14 @@ public class TeacherServiceImpl implements TeacherService {
     public Optional<Teacher> findById(Long id) {
         return DataHolder.teachers.stream().filter(x-> x.getId().equals(id)).findFirst();
     }
+
+    @Override
+    public Optional<Teacher> bestTeacher() {
+        return teacherRepository.bestTeacher();
+    }
+
+    @Override
+    public int coursesTought(Teacher teacher) {
+        return teacherRepository.coureesTought(teacher);
+    }
 }
