@@ -65,12 +65,12 @@ public class CourseServiceImpl implements CourseService {
         Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null); // should be exception
         Optional<Course> course = Optional.empty();
         boolean nameTaken = listAll().stream().anyMatch(x -> x.getName().equals(name));
-        if (courseId.isPresent()) {
+        if (courseId.isPresent()) { //editing here
             course = Optional.of(findById(courseId.get()));
-            if (!course.get().getName().equals(name)) {
+            if (!course.get().getName().equals(name) && nameTaken) {
                 throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
             }
-        } else {
+        } else { // adding here
             if (nameTaken) {
                 throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
             }
