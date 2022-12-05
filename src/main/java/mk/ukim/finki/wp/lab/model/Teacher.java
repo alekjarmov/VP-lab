@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -9,6 +10,7 @@ public class Teacher {
     private Long id;
     private String name;
     private String surname;
+    private LocalDate dateOfEmployment;
 
     public Teacher() {
     }

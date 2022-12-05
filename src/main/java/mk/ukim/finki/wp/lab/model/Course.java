@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.model;
 
 import lombok.Data;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class Course implements Comparable<Course>{
     private String description;
     private List<Student> students;
     private Teacher teacher;
+    private Type type;
 
     public Course() {
     }
