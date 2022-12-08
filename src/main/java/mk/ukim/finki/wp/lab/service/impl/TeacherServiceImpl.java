@@ -1,39 +1,43 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
-import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Teacher;
-import mk.ukim.finki.wp.lab.repository.TeacherRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.TeacherRepository;
+import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
-
-    public TeacherServiceImpl(TeacherRepository teacherRepository) {
+    private final CourseService courseService;
+    public TeacherServiceImpl(TeacherRepository teacherRepository, @Lazy CourseService courseService) {
         this.teacherRepository = teacherRepository;
+        this.courseService = courseService;
     }
 
     @Override
     public List<Teacher> findAll() {
-        return teacherRepository.findAllTeachers();
+        return teacherRepository.findAll();
     }
 
     @Override
     public Optional<Teacher> findById(Long id) {
-        return DataHolder.teachers.stream().filter(x-> x.getId().equals(id)).findFirst();
+        return teacherRepository.findById(id);
     }
 
     @Override
     public Optional<Teacher> bestTeacher() {
-        return teacherRepository.bestTeacher();
+        return findAll().stream().max(Comparator.comparingInt(this::coursesTought));
     }
 
     @Override
     public int coursesTought(Teacher teacher) {
-        return teacherRepository.coureesTought(teacher);
+        return courseService.listAll().stream().filter(x-> x.getTeacher().equals(teacher)).collect(Collectors.toList()).size();
     }
 }

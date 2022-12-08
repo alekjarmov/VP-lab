@@ -1,22 +1,28 @@
 package mk.ukim.finki.wp.lab.model;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
+@Entity
 public class Teacher {
+    @Id
     private Long id;
     private String name;
     private String surname;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfEmployment;
 
     public Teacher() {
     }
 
     public Teacher( String name, String surname) {
-        this.id = (long) (Math.random() * 1000);
+//        this.id = (long) (Math.random() * 1000);
         this.name = name;
         this.surname = surname;
     }

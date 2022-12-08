@@ -53,7 +53,9 @@ public class CourseController {
         try{
             this.courseService.saveCourse(name, description, teacherId, optionalCourseId);
         }catch (RuntimeException e){
-            return String.format("redirect:/courses?error=%s", e.getMessage());
+            //url encode the error message
+            String errorMessage = e.getMessage();
+            return String.format("redirect:/courses?error=%s", errorMessage.replaceAll("(\\[)|(\\])", ""));
         }
         request.getSession().invalidate();
         return "redirect:/courses";

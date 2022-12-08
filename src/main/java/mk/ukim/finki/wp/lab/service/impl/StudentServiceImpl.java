@@ -3,7 +3,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.exceptions.InvalidFormParameters;
 import mk.ukim.finki.wp.lab.model.exceptions.UsernameTakenException;
-import mk.ukim.finki.wp.lab.repository.StudentRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.StudentRepository;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +20,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> listAll() {
 
-        return studentRepository.findAllStundents();
+        return studentRepository.findAll();
     }
 
     @Override
     public List<Student> searchByNameOrSurname(String text) {
-        return studentRepository.findAllByNameOrSurname(text);
+        return studentRepository.findByNameLikeOrSurnameLike(text, text);
     }
 
     @Override
@@ -34,12 +34,13 @@ public class StudentServiceImpl implements StudentService {
             throw new InvalidFormParameters();
         if (searchByUsername(username) != null)
             throw new UsernameTakenException();
-        return studentRepository.addStudent(new Student(username, password, name, surname));
+        Student student = new Student(username, password, name, surname);
+        return studentRepository.save(student);
     }
 
     @Override
     public Student searchByUsername(String username) {
-        return studentRepository.findByUsername(username);
+        return studentRepository.findById(username).orElse(null);
     }
 
 }

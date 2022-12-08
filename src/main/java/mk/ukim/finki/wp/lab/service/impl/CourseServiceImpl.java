@@ -7,12 +7,13 @@ import mk.ukim.finki.wp.lab.model.exceptions.CourseDoesNotExistException;
 import mk.ukim.finki.wp.lab.model.exceptions.InvalidFormParameters;
 import mk.ukim.finki.wp.lab.model.exceptions.NoSuchUsernameException;
 import mk.ukim.finki.wp.lab.model.exceptions.StudentAlreadyInCourseException;
-import mk.ukim.finki.wp.lab.repository.CourseRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,15 +32,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Student> listStudentsByCourse(Long courseId) {
-        return courseRepository.findAllStudentsByCourse(courseId);
+        return courseRepository.findById(courseId).orElseThrow(CourseDoesNotExistException::new).getStudents();
     }
 
     @Override
     public Course addStudentInCourse(String username, Long courseId) {
-        Course course = courseRepository.findById(courseId);
-        if (course == null) {
+        if (!courseRepository.findById(courseId).isPresent())
             throw new CourseDoesNotExistException();
-        }
+        Course course = courseRepository.findById(courseId).get();
         Student student = studentService.searchByUsername(username);
         if (student == null) {
             throw new NoSuchUsernameException("No username selected");
@@ -47,39 +47,46 @@ public class CourseServiceImpl implements CourseService {
         if (course.getStudents().contains(student)) {
             throw new StudentAlreadyInCourseException();
         }
-        return courseRepository.addStudentToCourse(student, course);
+        course.getStudents().add(student);
+        return courseRepository.save(course);
     }
 
     @Override
     public List<Course> listAll() {
-        return courseRepository.findAllCourses();
+        return courseRepository.findAll();
     }
 
     @Override
     public Course findById(Long courseId) {
-        return courseRepository.findById(courseId);
+        // better for exception to be thrown
+        return courseRepository.findById(courseId).orElse(null);
     }
 
     @Override
+    @Transactional
     public Course saveCourse(String name, String description, Long teacherId, Optional<Long> courseId) {
         Teacher teacherForCourse = teacherService.findById(teacherId).orElse(null); // should be exception
-        Optional<Course> course = Optional.empty();
+        Course course = null;
         boolean nameTaken = listAll().stream().anyMatch(x -> x.getName().equals(name));
         if (courseId.isPresent()) { //editing here
-            course = Optional.of(findById(courseId.get()));
-            if (!course.get().getName().equals(name) && nameTaken) {
+            course = findById(courseId.get());
+            if (!course.getName().equals(name) && nameTaken) {
                 throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
             }
+            course.setName(name);
+            course.setDescription(description);
+            course.setTeacher(teacherForCourse);
         } else { // adding here
             if (nameTaken) {
                 throw new InvalidFormParameters(String.format("A course with the name '%s' already exists!", name));
             }
+            course = new Course(name, description, teacherForCourse);
         }
-        return courseRepository.saveCourse(name, description, teacherForCourse, course);
+        return courseRepository.save(course);
     }
 
     @Override
-    public Course deleteCourse(Long id) {
-        return courseRepository.deleteCourse(id);
+    public void deleteCourse(Long id) {
+        courseRepository.deleteById(id);
     }
 }
