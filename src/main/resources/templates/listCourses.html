@@ -46,7 +46,8 @@
     </form>
     <div th:if="${hasError}" th:text="${error}" style="color: red"></div>
     <br>
-    <a th:href="@{/courses/add}">Add course</a>
+    <a th:href="@{/courses/add}">Add course</a> <br>
+    <a th:href="@{/grades/list}">Grades overview</a>
 </main>
 </body>
 </html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Create a New Student Page</title>
+</head>
+<body>
+<header>
+    <h1 th:inline="text">Add a grade for the student [[${student.getUsername()}]] and the course [[${course
+        .getName()}]]</h1>
+</header>
+<form th:method="POST" th:action="@{/grades/add}">
+    <section>
+        <input type="hidden" th:value="${course.getCourseId()}" name="courseId">
+        <input type="hidden" th:value="${student.getUsername()}" name="username">
+        <label for="grade-dropdown">Grade: </label>
+        <select name="grade" id="grade-dropdown">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+        </select>
+        <label for="grade-timestamp">Grade timestamp: </label>
+        <input type="datetime-local" id="grade-timestamp" name="timestamp">
+        <input type='submit' value='Submit'/>
+        <div th:if="${hasError}">
+            <span th:text="${error}" style="color:red;"></span>
+        </div>
+    </section>
+</form>
+
+</body>
+</html>

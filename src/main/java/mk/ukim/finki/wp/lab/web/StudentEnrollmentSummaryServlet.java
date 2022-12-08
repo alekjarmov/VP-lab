@@ -1,8 +1,10 @@
 package mk.ukim.finki.wp.lab.web;
 
 import mk.ukim.finki.wp.lab.model.Course;
+import mk.ukim.finki.wp.lab.model.Grade;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.service.CourseService;
+import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -13,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "StudentEnrollmentSummaryServlet", urlPatterns = "/StudentEnrollmentSummary")
 public class StudentEnrollmentSummaryServlet extends HttpServlet {
@@ -21,11 +25,13 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final CourseService courseService;
     private final StudentService studentService;
-
-    public StudentEnrollmentSummaryServlet(SpringTemplateEngine springTemplateEngine, CourseService courseService, StudentService studentService) {
+    private final GradeService gradeService;
+    public StudentEnrollmentSummaryServlet(SpringTemplateEngine springTemplateEngine, CourseService courseService,
+                                           StudentService studentService, GradeService gradeService) {
         this.springTemplateEngine = springTemplateEngine;
         this.courseService = courseService;
         this.studentService = studentService;
+        this.gradeService = gradeService;
     }
 
     @Override
@@ -42,6 +48,19 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
         context.setVariable("enrolledStudents", enrolledStudents);
         // req.getSession().removeAttribute("selectedCourse"); // se trga vekje izbraniot kurs
         context.setVariable("courses", courseService.listAll());
+
+        List<Grade> allGrades = gradeService.findAllByCourseId(courseId);
+        Map<Student, Grade> grades = new HashMap<>();
+        for (Grade grade : allGrades) {
+            grades.put(grade.getStudent(), grade);
+        }
+        for (Student student : enrolledStudents) {
+            if (!grades.containsKey(student)) {
+                grades.put(student, null);
+            }
+        }
+        context.setVariable("grades", grades);
+
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
 
     }

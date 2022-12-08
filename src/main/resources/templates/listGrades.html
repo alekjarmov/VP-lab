@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Grades overview</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Grades List</h1>
+</header>
+<main>
+    <ul>
+        <li th:each="grade: ${grades}">
+            Student: <span th:text="${grade.getStudent()}"></span>
+            has grade: <strong><span th:text="${grade.getGrade()}"></span> </strong>
+            for course: <span th:text="${grade.getCourse().getName()}"></span>
+            (<span th:text="${grade.getTimestamp().format(formatter)}"> </span>)
+        </li>
+
+    <div th:if="${hasError}" th:text="${error}" style="color: red"></div>
+    <br>
+    <a th:href="@{/courses}">Home</a>
+</main>
+</body>
+</html>

@@ -26,6 +26,7 @@ public class CourseFilter implements Filter {
         excludedRoutes.put("/courses/add", Arrays.asList("POST", "GET"));
         excludedRoutes.put("/courses/delete/{id}", Arrays.asList("GET", "DELETE"));
         excludedRoutes.put("/courses/edit-form/{id}", Arrays.asList("GET"));
+        excludedRoutes.put("/grades/list", Arrays.asList("GET"));
         String method = request.getMethod();
         // clean up the path will change the ids and so on
         path = cleanPath(excludedRoutes, path);
@@ -40,6 +41,7 @@ public class CourseFilter implements Filter {
     }
 
     public boolean shouldRedirect(Map<String, List<String>> excludedRoutes, String path, String method) {
+        // if the path is not in the excluded routes then we should redirect
         if (excludedRoutes.containsKey(path)) {
             List<String> methods = excludedRoutes.get(path);
             return !methods.contains(method);

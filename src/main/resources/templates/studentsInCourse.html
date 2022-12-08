@@ -11,23 +11,32 @@
 </header>
 <section>
 
-        <form th:method="GET" th:action="@{/StudentEnrollmentSummary}">
-            <div >
-                <select  name="newCourse">
-                    <div th:each="course : ${courses}">
-                        <option th:value="${course.courseId}" th:text="${course.name}"></option>
-                    </div>
+    <form th:method="GET" th:action="@{/StudentEnrollmentSummary}">
+        <div>
+            <select name="newCourse">
+                <div th:each="course : ${courses}">
+                    <option th:value="${course.courseId}" th:text="${course.name}"></option>
+                </div>
 
-                </select>
-                <button type="submit">Submit</button>
+            </select>
+            <button type="submit">Submit</button>
 
-            </div>
-        </form>
+        </div>
+    </form>
 
 
     <div><span th:text="${course.getName()}"></span></div>
     <ul th:each="student : ${enrolledStudents}">
-        <li><span th:text="${student.toString()}"></span></li>
+        <li><span th:text="${student.toString()}"></span>
+            <span th:if="${grades.get(student)== null}"> <a
+                    th:href="@{/grades/add(courseId=${course.getCourseId()}, username=${student.getUsername()})}">
+                Add grade
+            </a>
+            </span>
+            <span th:unless="${grades.get(student)== null}">
+                with grade: <strong>[[${grades.get(student).getGrade()}]]</strong>
+            </span>
+        </li>
     </ul>
     <!--        <li>Јован Јованов (jovan.jovanov)</li>-->
     <a href="/courses">Back</a> <!-- Weird error message, should be able to scan the controller-->
