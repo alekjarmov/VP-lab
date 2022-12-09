@@ -57,6 +57,9 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     public List<Grade> findAllBetween(LocalDateTime from, LocalDateTime to) {
-        return gradeRepository.findAllBetween(from, to);
+//        Long start = from.toEpochSecond(null);
+//        Long end = to.toEpochSecond(null);
+//        return gradeRepository.findAllByTimestampAfterAndTimestampBefore(start, end);
+        return gradeRepository.findByTimestampBetween(from, to);
     }
 }

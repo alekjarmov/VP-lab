@@ -1,8 +1,10 @@
 package mk.ukim.finki.wp.lab.model;
 
 import lombok.Data;
+import mk.ukim.finki.wp.lab.TeacherFullNameConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
@@ -13,8 +15,8 @@ import java.util.Objects;
 public class Teacher {
     @Id
     private Long id;
-    private String name;
-    private String surname;
+    @Convert(converter = TeacherFullNameConverter.class)
+    private TeacherFullName fullName;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfEmployment;
@@ -24,8 +26,16 @@ public class Teacher {
 
     public Teacher( String name, String surname) {
 //        this.id = (long) (Math.random() * 1000);
-        this.name = name;
-        this.surname = surname;
+        this.fullName = new TeacherFullName();
+        this.fullName.setName(name);
+        this.fullName.setSurname(surname);
+        this.dateOfEmployment = LocalDate.now();
+    }
+    public Teacher( String name, String surname, LocalDate dateOfEmployment) {
+        this.fullName = new TeacherFullName();
+        this.fullName.setName(name);
+        this.fullName.setSurname(surname);
+        this.dateOfEmployment = dateOfEmployment;
     }
 
     @Override
@@ -38,11 +48,23 @@ public class Teacher {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getSurname());
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
-        return String.format("%s %s (%d)", name, surname, id);
+        return String.format("%s (%d)", fullName.toString(), id);
+    }
+
+    public String getName() {
+        if (fullName == null)
+            return null;
+        return fullName.getName();
+    }
+
+    public String getSurname() {
+        if (fullName == null)
+            return null;
+        return fullName.getSurname();
     }
 }

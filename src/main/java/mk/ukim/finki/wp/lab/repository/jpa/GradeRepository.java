@@ -9,7 +9,8 @@ import java.util.List;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
     public List<Grade> findAllByCourseCourseId(Long courseId);
     public Grade findByCourseCourseIdAndStudentUsername(Long courseId, String username);
-    public List<Grade> findAllBetween(LocalDateTime from, LocalDateTime to);
-
+    public List<Grade> findAllByTimestampAfterAndTimestampBefore(Long start, Long end);
+//    public List<Grade> findAllBetween(LocalDateTime from, LocalDateTime to);
+    public List<Grade> findByTimestampBetween(LocalDateTime from, LocalDateTime to);
 }
 

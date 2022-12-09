@@ -26,7 +26,8 @@ public class CourseFilter implements Filter {
         excludedRoutes.put("/courses/add", Arrays.asList("POST", "GET"));
         excludedRoutes.put("/courses/delete/{id}", Arrays.asList("GET", "DELETE"));
         excludedRoutes.put("/courses/edit-form/{id}", Arrays.asList("GET"));
-        excludedRoutes.put("/grades/list", Arrays.asList("GET"));
+        excludedRoutes.put("/grades/list", Arrays.asList("GET", "POST"));
+        excludedRoutes.put("/grades/format", Arrays.asList("GET", "POST"));
         String method = request.getMethod();
         // clean up the path will change the ids and so on
         path = cleanPath(excludedRoutes, path);

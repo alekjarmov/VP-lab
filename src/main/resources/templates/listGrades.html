@@ -15,6 +15,13 @@
     <h1>Grades List</h1>
 </header>
 <main>
+    <div>
+        <form th:method="POST" th:action="@{/grades/filter}">
+            From : <input type="datetime-local" id="grade-from" name="from"> To: <input type="datetime-local"
+                                                                                         id="grade-to" name="to">
+            <input type="submit" value="Filter"/>
+        </form>
+    </div>
     <ul>
         <li th:each="grade: ${grades}">
             Student: <span th:text="${grade.getStudent()}"></span>

@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Course;
+import mk.ukim.finki.wp.lab.model.Grade;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.GradeService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
 @RequestMapping("/grades")
@@ -51,6 +53,19 @@ public class GradeController {
         model.addAttribute("grades", gradeService.findAll());
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
 
+        return "listGrades";
+    }
+
+    @PostMapping("/filter")
+    public String filterGrades(@RequestParam(required = false) @DateTimeFormat (iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+                               @RequestParam(required = false) @DateTimeFormat (iso=DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
+                               Model model){
+        if (from == null || to == null){
+            return "redirect:/grades/list";
+        }
+        List<Grade> filteredGrades = gradeService.findAllBetween(from, to);
+        model.addAttribute("grades", filteredGrades);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         return "listGrades";
     }
 
