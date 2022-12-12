@@ -2,6 +2,7 @@ package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Teacher;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,11 +49,12 @@ public class CourseController {
                             @RequestParam String description,
                             @RequestParam Long teacherId,
                             @RequestParam(required = false) Long courseId,
+                            @RequestParam String type,
                             HttpServletRequest request
     ) {
         Optional<Long> optionalCourseId = Optional.ofNullable(courseId);
         try{
-            this.courseService.saveCourse(name, description, teacherId, optionalCourseId);
+            this.courseService.saveCourse(name, description, teacherId, optionalCourseId, Type.valueOf(type));
         }catch (RuntimeException e){
             //url encode the error message
             String errorMessage = e.getMessage();
@@ -65,6 +68,8 @@ public class CourseController {
     public String addCourseGet(Model model) {
         List<Teacher> teachers = teacherService.findAll();
         model.addAttribute("teachers", teachers);
+        List<Type> types = Arrays.asList(Type.values());
+        model.addAttribute("types", types);
         return "add-course";
     }
 
@@ -81,6 +86,9 @@ public class CourseController {
             model.addAttribute("course", course);
             List<Teacher> teachers = teacherService.findAll();
             model.addAttribute("teachers", teachers);
+
+            List<Type> types = Arrays.asList(Type.values());
+            model.addAttribute("types", types);
             return "add-course";
         }
         return "redirect:/courses";

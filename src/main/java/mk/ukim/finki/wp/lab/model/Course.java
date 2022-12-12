@@ -25,6 +25,10 @@ public class Course implements Comparable<Course>{
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades;
+
+
     public Course() {
     }
 
@@ -35,13 +39,25 @@ public class Course implements Comparable<Course>{
         this.description = description;
         this.students = students;
         this.teacher = teacher;
+        this.grades = new ArrayList<>();
     }
     public Course (String name, String description, Teacher teacher){
         this.name = name;
         this.description = description;
         this.teacher = teacher;
         this.students = new ArrayList<>();
+        this.grades = new ArrayList<>();
     }
+
+    public Course (String name, String description, Teacher teacher, Type type){
+        this.name = name;
+        this.description = description;
+        this.teacher = teacher;
+        this.students = new ArrayList<>();
+        this.grades = new ArrayList<>();
+        this.type = type;
+    }
+
     @Override
     public int compareTo(Course o) {
         return this.getName().compareTo(o.getName());

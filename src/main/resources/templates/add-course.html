@@ -24,24 +24,43 @@
                 th:value="${course == null ? '': course.description}"/><br/>
         <label for='teacherId'>Teacher:</label>
         <select name="teacherId" id="teacherId">
-                <!--/*@thymesVar id="teacher" type="mk.ukim.finki.wp.lab.model.Teacher"*/-->
-                <option
-                        th:if="${course != null}"
-                        th:each="teacher : ${teachers}"
-                        th:value="${teacher.getId()}"
-                        th:text="${teacher.toString()}"
-                        th:selected="${teacher!= null && teacher.getId()!=null && teacher.getId() == course.teacher.getId() }"
-                >
-                </option>
-                <option
-                        th:if="${course == null}"
-                        th:each="teacher : ${teachers}"
-                        th:value="${teacher.getId()}"
-                        th:text="${teacher.toString()}">
-                </option>
+            <!--/*@thymesVar id="teacher" type="mk.ukim.finki.wp.lab.model.Teacher"*/-->
+            <option
+                    th:if="${course != null}"
+                    th:each="teacher : ${teachers}"
+                    th:value="${teacher.getId()}"
+                    th:text="${teacher.toString()}"
+                    th:selected="${teacher!= null && teacher.getId()!=null && teacher.getId() == course.teacher.getId() }"
+            >
+            </option>
+            <option
+                    th:if="${course == null}"
+                    th:each="teacher : ${teachers}"
+                    th:value="${teacher.getId()}"
+                    th:text="${teacher.toString()}">
+            </option>
         </select>
-        <input  th:if="${course != null}" type="hidden" th:value="${course.getCourseId()}"
-                name="courseId">
+        <div>
+            <label for="type">Type: </label>
+            <select th:if="${course} == null" name="type" id="type">
+                <option th:each="type : ${types}"
+                        th:text="${type.toString()}"
+                        th:value="${type.toString()}">
+                </option>
+            </select>
+
+            <select th:if="${course} != null" name="type" id="type">
+                <option th:each="type : ${types}"
+                        th:selected="${course.getType() != null && course.getType().equals(type)}"
+                        th:text="${type.toString()}"
+                        th:value="${type.toString()}">
+                </option>
+            </select>
+        </div>
+
+
+        <input th:if="${course != null}" type="hidden" th:value="${course.getCourseId()}"
+               name="courseId">
         <input type='submit' value='Submit'/>
         <div th:if="${hasError}">
             <span th:text="${error}" style="color:red;"></span>

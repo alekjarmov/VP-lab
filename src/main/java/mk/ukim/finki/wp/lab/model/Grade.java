@@ -1,6 +1,8 @@
 package mk.ukim.finki.wp.lab.model;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,10 +15,15 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Character grade;
+
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Student student;
+
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
 
