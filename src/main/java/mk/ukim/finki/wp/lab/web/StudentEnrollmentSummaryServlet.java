@@ -37,6 +37,7 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        resp.setContentType("text/html; charset=UTF-8");
         if (req.getParameter("newCourse")!= null){
             String courseId = req.getParameter("newCourse");
             req.getSession().setAttribute("selectedCourse",courseId);
@@ -70,6 +71,7 @@ public class StudentEnrollmentSummaryServlet extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         long courseId = Long.parseLong(req.getSession().getAttribute("selectedCourse").toString());
         String username  = req.getParameter("size");
+        resp.setContentType("text/html; charset=UTF-8");
         try {
             courseService.addStudentInCourse(username, courseId);
             resp.sendRedirect("/StudentEnrollmentSummary");

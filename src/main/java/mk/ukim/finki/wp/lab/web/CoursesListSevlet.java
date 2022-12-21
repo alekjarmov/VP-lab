@@ -41,7 +41,7 @@ public class CoursesListSevlet extends HttpServlet {
         }else{
             context.setVariable("bestTeacherCourses", 0);
         }
-
+        resp.setContentType("text/html; charset=UTF-8");
         springTemplateEngine.process("listCourses.html", context, resp.getWriter());
 
     }

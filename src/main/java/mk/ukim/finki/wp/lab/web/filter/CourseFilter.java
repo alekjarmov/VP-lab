@@ -1,5 +1,7 @@
 package mk.ukim.finki.wp.lab.web.filter;
 
+import org.springframework.context.annotation.Profile;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 @WebFilter
+@Profile("no-security")
 public class CourseFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

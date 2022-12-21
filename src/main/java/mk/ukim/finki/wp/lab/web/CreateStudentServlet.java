@@ -28,7 +28,7 @@ public class CreateStudentServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
+        resp.setContentType("application/xhtml+xml");
         springTemplateEngine.process("createStudent.html", context, resp.getWriter());
     }
 
@@ -40,6 +40,7 @@ public class CreateStudentServlet extends HttpServlet {
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
         context.setVariable("hasError", false);
+        resp.setContentType("application/xhtml+xml");
         try{
             studentService.save(username, password, name, surname);
             resp.sendRedirect("/AddStudent");

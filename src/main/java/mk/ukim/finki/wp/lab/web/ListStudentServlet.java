@@ -37,6 +37,7 @@ public class ListStudentServlet extends HttpServlet {
             req.getSession().removeAttribute("hasError");
             req.getSession().removeAttribute("error");
         }
+        resp.setContentType("text/html; charset=UTF-8");
         context.setVariable("selectedCourse", selectedCourse);
         springTemplateEngine.process("listStudents.html", context, resp.getWriter());
 
@@ -44,6 +45,7 @@ public class ListStudentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html; charset=UTF-8");
         req.getSession().setAttribute("selectedCourse",req.getParameter("courseId"));
         resp.sendRedirect("/AddStudent");
     }
