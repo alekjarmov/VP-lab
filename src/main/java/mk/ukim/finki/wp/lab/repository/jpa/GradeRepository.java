@@ -12,5 +12,6 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     public List<Grade> findAllByTimestampAfterAndTimestampBefore(Long start, Long end);
 //    public List<Grade> findAllBetween(LocalDateTime from, LocalDateTime to);
     public List<Grade> findByTimestampBetween(LocalDateTime from, LocalDateTime to);
+    public List<Grade> findByGradeBetween(Character from, Character to);
 }
 

@@ -13,5 +13,6 @@ public interface GradeService {
     public Grade save(Character grade, String username, Long courseId, LocalDateTime timestamp);
     public Optional<Grade> findById(Long id);
     public List<Grade> findAllBetween(LocalDateTime from, LocalDateTime to);
+    public List<Grade> findByGradeBetween(Character from, Character to);
 
 }

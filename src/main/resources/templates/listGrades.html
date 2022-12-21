@@ -22,6 +22,28 @@
             <input type="submit" value="Filter"/>
         </form>
     </div>
+    <div>
+        <form th:method="POST" th:action="@{/grades/filterByGrade}">
+            From: <select name="grade1" id="from-grade">
+                <option value="T"></option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select>
+
+            To: <select name="grade2" id="to-grade">
+                <option value="T"></option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="F">F</option>
+            </select>
+            <input type="submit" value="Filter"/>
+        </form>
+    </div>
     <ul>
         <li th:each="grade: ${grades}">
             Student: <span th:text="${grade.getStudent()}"></span>

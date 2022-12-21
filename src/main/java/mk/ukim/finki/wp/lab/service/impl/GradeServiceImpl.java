@@ -62,4 +62,9 @@ public class GradeServiceImpl implements GradeService {
 //        return gradeRepository.findAllByTimestampAfterAndTimestampBefore(start, end);
         return gradeRepository.findByTimestampBetween(from, to);
     }
+
+    @Override
+    public List<Grade> findByGradeBetween(Character from, Character to) {
+        return gradeRepository.findByGradeBetween(from, to);
+    }
 }

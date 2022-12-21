@@ -68,6 +68,24 @@ public class GradeController {
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
         return "listGrades";
     }
+    @PostMapping("filterByGrade")
+    public String filterByGrade(@RequestParam(required = false) Character grade1,
+                                @RequestParam(required = false) Character grade2,
+            Model model){
+        if((grade1==null && grade2==null) || (grade1=='T' && grade2=='T')){
+            return "redirect:/grades/list";
+        }
+        if (grade1 == null || grade1 == 'T'){
+            grade1 = 'A';
+        }
+        if (grade2 == null || grade2 == 'T'){
+            grade2 = 'F';
+        }
+        List<Grade> filteredGrades = gradeService.findByGradeBetween(grade1, grade2);
+        model.addAttribute("grades", filteredGrades);
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        return "listGrades";
+    }
 
 
 }
