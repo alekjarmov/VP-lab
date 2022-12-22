@@ -7,6 +7,7 @@ import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -39,5 +40,13 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public int coursesTought(Teacher teacher) {
         return courseService.listAll().stream().filter(x-> x.getTeacher().equals(teacher)).collect(Collectors.toList()).size();
+    }
+
+    @Override
+    public Teacher save(String name, String surname, LocalDate timeOfEmployment) {
+        if (timeOfEmployment==null){
+            return teacherRepository.save(new Teacher(name,surname));
+        }
+        return teacherRepository.save(new Teacher(name, surname,timeOfEmployment));
     }
 }

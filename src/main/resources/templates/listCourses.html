@@ -38,10 +38,11 @@
 <!--                  style="display: inline">-->
 <!--                <button style="color: red;display: inline" type="submit"> Delete</button>-->
 <!--            </form>-->
-            <a th:href="@{'/courses/delete/{id}' (id = ${course.getCourseId()})}" style="color: red" sec:authorize="hasRole('ADMIN')">Delete</a>
+            <a th:href="@{'/courses/delete/{id}' (id = ${course.getCourseId()})}" style="color: red" sec:authorize="hasRole('ADMIN')"
+            th:class="delete-btn">Delete</a>
             &nbsp;
             <a th:href="@{'/courses/edit-form/{id}' (id=${course.getCourseId()})}" style="color: aquamarine;background:
-            black" sec:authorize="hasRole('ADMIN')">Edit
+            black" sec:authorize="hasRole('ADMIN')" th:class="edit-btn">Edit
             </a>
 
         </div>
