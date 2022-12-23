@@ -4,14 +4,16 @@ import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.junit.Assert;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.Optional;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -45,20 +47,14 @@ public class SeleniumScenarioTest {
         if(dataInitialized)
             return;
         dataInitialized = true;
-        try{
-            teahcerService.save("TestTeacher","Tich", null);
-            courseService.saveCourse("TestCourse", "Testdesc", 1L, null, Type.ELECTIVE);
-        }
-        catch (Exception ignored){
-
-        }
-
+        teahcerService.save("TestTeacher","Tich", null);
+        courseService.saveCourse("TestCourse", "Testdesc", 1L, Optional.empty(), Type.ELECTIVE);
 
     }
 
     @Test
     public void testScenario() throws Exception{
-        setup();
+        //setup();
         this.driver.get("http://localhost:9999/courses");
         String pageSource1= this.driver.getPageSource();
         Assert.assertTrue(driver.findElements(By.className("edit-btn")).isEmpty());
@@ -70,9 +66,10 @@ public class SeleniumScenarioTest {
         this.driver.findElement(By.id("username")).sendKeys("admin");
         driver.findElements(By.name("username"));
         this.driver.findElement(By.id("password")).sendKeys("admin");
+        String pagesourcelogin = this.driver.getPageSource();
         this.driver.findElement(By.tagName("button")).click();
-
-        this.driver.get("http://localhost:8080/courses");
+        this.driver.get("http://localhost:9999/courses");
+        String pageSource2= this.driver.getPageSource();
         Assert.assertFalse(driver.findElements(By.className("edit-btn")).isEmpty());
         Assert.assertFalse(driver.findElements(By.className("delete-btn")).isEmpty());
     }

@@ -4,9 +4,7 @@ import lombok.Data;
 import mk.ukim.finki.wp.lab.TeacherFullNameConverter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,6 +12,7 @@ import java.util.Objects;
 @Entity
 public class Teacher {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Convert(converter = TeacherFullNameConverter.class)
     private TeacherFullName fullName;
