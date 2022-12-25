@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/courses");
     }
 
+    // bi trebalo different configure i passwordEncoder da se koristi
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
