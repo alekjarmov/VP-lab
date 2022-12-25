@@ -74,4 +74,14 @@ public class SeleniumScenarioTest {
         Assert.assertFalse(driver.findElements(By.className("delete-btn")).isEmpty());
     }
 
+    @Test
+    public void modularScenarioTest() throws Exception{
+        CoursesPage coursesPage = CoursesPage.to(driver);
+        coursesPage.assertNotLoggedIn();
+
+        LoginPage loginPage = LoginPage.openLogin(driver);
+        coursesPage = LoginPage.doLogin(driver, loginPage, "admin", "admin");
+        coursesPage.assertLoggedIn();
+    }
+
 }

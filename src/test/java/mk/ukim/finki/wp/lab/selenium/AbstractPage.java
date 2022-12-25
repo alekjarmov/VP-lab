@@ -1,9 +1,7 @@
 package mk.ukim.finki.wp.lab.selenium;
 
-import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 
-@Getter
 public class AbstractPage {
 
     protected WebDriver driver;

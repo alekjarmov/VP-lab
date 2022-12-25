@@ -51,7 +51,7 @@
     </form>
     <div th:if="${hasError}" th:text="${error}" style="color: red"></div>
     <br>
-    <a  sec:authorize="hasRole('ADMIN')" th:href="@{/courses/add}">Add course</a> <br>
+    <a  sec:authorize="hasRole('ADMIN')" th:href="@{/courses/add}" id="add-course-link">Add course</a> <br>
     <a th:href="@{/grades/list}">Grades overview</a>
 </main>
 </body>
